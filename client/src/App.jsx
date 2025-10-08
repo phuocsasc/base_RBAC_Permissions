@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Login from '~/pages/Login';
 import Dashboard from '~/pages/Dashboard';
+import NotFound from '~/pages/NotFound';
+import AccessDenied from '~/pages/AccessDenied';
 
 /**
  * Giải pháp Clean Code trong việc xác định các route nào cần đăng nhập tài khoản xong thì mới cho truy cập
@@ -38,8 +40,16 @@ function App() {
             <Route element={<ProtectedRoutes />}>
                 {/* <Outlet /> của react-router-dom sẽ chạy vào các child route trong này */}
                 <Route path="/dashboard" element={<Dashboard />} />
-                {/* Sau này sẽ còn nhiều Route nữa ở đây ...v.v */}
+                {/* Tất cả elemennt ở đây đều gọi tới cùng component Dashboard vì chúng ta đang gom chung
+                    các pages dưới dạng tabs và code hết trong component Dashboard này để test cho gọn, 
+                    thực tế có thể tách pages vào các component khác nhau tùy dự án */}
+                <Route path="/support" element={<Dashboard />} />
+                <Route path="/messages" element={<Dashboard />} />
+                <Route path="/revenue" element={<Dashboard />} />
+                <Route path="/admin-tools" element={<Dashboard />} />
             </Route>
+            <Route path="/access-denied" element={<AccessDenied />} />
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }

@@ -1,32 +1,29 @@
 module.exports = {
     root: true,
     env: {
-        browser: true, // Cho React frontend
-        node: true, // Cho Node backend
+        browser: true,
+        node: true,
         es2021: true,
     },
+    parser: '@babel/eslint-parser',
     parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        ecmaFeatures: {
-            jsx: true, // Cho phép JSX
-        },
+        ecmaFeatures: { jsx: true },
+        requireConfigFile: false,
     },
     settings: {
-        react: {
-            version: 'detect', // Tự động detect version React
-        },
+        react: { version: 'detect' },
     },
     extends: [
         'eslint:recommended',
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
         'plugin:jsx-a11y/recommended',
-        'plugin:prettier/recommended', // Kết hợp với Prettier
+        'plugin:prettier/recommended',
     ],
     plugins: ['react', 'react-hooks', 'jsx-a11y'],
     rules: {
-        // Đồng bộ với .prettierrc
         'prettier/prettier': [
             'error',
             {
@@ -37,7 +34,7 @@ module.exports = {
                 htmlWhitespaceSensitivity: 'css',
                 insertPragma: false,
                 jsxSingleQuote: false,
-                printWidth: 100,
+                printWidth: 120,
                 proseWrap: 'preserve',
                 quoteProps: 'as-needed',
                 requirePragma: false,
@@ -49,10 +46,8 @@ module.exports = {
                 vueIndentScriptAndStyle: false,
             },
         ],
-
-        // Một số rule hay dùng
         'no-unused-vars': 'warn',
-        'react/prop-types': 'off', // Nếu bạn không dùng PropTypes
-        'react/react-in-jsx-scope': 'off', // React 17+ không cần import React
+        'react/prop-types': 'off',
+        'react/react-in-jsx-scope': 'off',
     },
 };

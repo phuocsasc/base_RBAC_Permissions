@@ -2,7 +2,7 @@ import { Alert, Box, Typography, CircularProgress, Divider, Button, Tab } from '
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 import { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 import authorizedAxiosInstance from '~/utils/authorizedAxios';
 import { API_ROOT, TAB_URLS } from '~/utils/constants';
@@ -13,6 +13,7 @@ import coverOnepice from '~/assets/one-piece-manga-covers.jpg';
 function Dashboard() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,8 +37,16 @@ function Dashboard() {
         navigate('/login');
     };
 
-    const [tab, setTab] = useState(TAB_URLS.DASHBOARD);
+    const getDefaultActiveTab = () => {
+        let activeTab = TAB_URLS.DASHBOARD;
+        Object.values(TAB_URLS).forEach((tab) => {
+            if (location.pathname.includes(tab)) activeTab = tab;
+        });
+        return activeTab;
+    };
+    console.log(getDefaultActiveTab());
 
+    const [tab, setTab] = useState(getDefaultActiveTab());
     const handleChange = (event, newTab) => {
         setTab(newTab);
     };
@@ -81,15 +90,9 @@ function Dashboard() {
                 ></Box>
             </Box>
 
-            <Alert
-                severity="info"
-                sx={{ '.MuiAlert-message': { overflow: 'hidden' }, width: { md: 'max-content' } }}
-            >
+            <Alert severity="info" sx={{ '.MuiAlert-message': { overflow: 'hidden' }, width: { md: 'max-content' } }}>
                 Đây là trang Dashboard sau khi user:&nbsp;
-                <Typography
-                    variant="span"
-                    sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}
-                >
+                <Typography variant="span" sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}>
                     {user?.email}
                 </Typography>
                 &nbsp; đăng nhập thành công thì mới cho truy cập vào.
@@ -100,10 +103,7 @@ function Dashboard() {
                 sx={{ '.MuiAlert-message': { overflow: 'hidden' }, width: { md: 'max-content' } }}
             >
                 Role hiện tại của User đang đăng nhập là:&nbsp;
-                <Typography
-                    variant="span"
-                    sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}
-                >
+                <Typography variant="span" sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}>
                     {user?.role}
                 </Typography>
             </Alert>
@@ -113,11 +113,11 @@ function Dashboard() {
             <TabContext value={tab}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label="RBAC Permission Tabs">
-                        <Tab label="Dashboard" value={TAB_URLS.DASHBOARD} />
-                        <Tab label="Support" value={TAB_URLS.SUPPORT} />
-                        <Tab label="Messages" value={TAB_URLS.MESSAGES} />
-                        <Tab label="Revenue" value={TAB_URLS.REVENUE} />
-                        <Tab label="Admin-tool" value={TAB_URLS.ADMIN_TOOLS} />
+                        <Tab label="Dashboard" value={TAB_URLS.DASHBOARD} component={Link} to={'/dashboard'} />
+                        <Tab label="Support" value={TAB_URLS.SUPPORT} component={Link} to={'/support'} />
+                        <Tab label="Messages" value={TAB_URLS.MESSAGES} component={Link} to={'/messages'} />
+                        <Tab label="Revenue" value={TAB_URLS.REVENUE} component={Link} to={'/revenue'} />
+                        <Tab label="Admin-tools" value={TAB_URLS.ADMIN_TOOLS} component={Link} to={'/admin-tools'} />
                     </TabList>
                 </Box>
                 <TabPanel value={TAB_URLS.DASHBOARD} sx={{ padding: '24px 0' }}>

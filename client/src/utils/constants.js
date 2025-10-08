@@ -5,5 +5,5 @@ export const TAB_URLS = {
     SUPPORT: 'support',
     MESSAGES: 'messages',
     REVENUE: 'revenue',
-    ADMIN_TOOLS: 'admin_tools',
+    ADMIN_TOOLS: 'admin-tools',
 };
