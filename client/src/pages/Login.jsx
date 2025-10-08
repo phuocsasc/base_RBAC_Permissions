@@ -30,6 +30,7 @@ function Login() {
         const userInfo = {
             id: res.data.id,
             email: res.data.email,
+            role: res.data.role,
         };
 
         // Lưu token và thông tin của User vào LocalStorage, dùng JS thuần.
@@ -85,6 +86,7 @@ function Login() {
                         <Box sx={{ padding: '0 1em 1em 1em' }}>
                             <Box sx={{ marginTop: '1.2em' }}>
                                 <TextField
+                                    // eslint-disable-next-line jsx-a11y/no-autofocus
                                     autoFocus
                                     fullWidth
                                     label="Nhập Email..."
