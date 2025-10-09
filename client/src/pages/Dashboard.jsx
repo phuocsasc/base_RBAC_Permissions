@@ -9,11 +9,17 @@ import { API_ROOT, TAB_URLS } from '~/utils/constants';
 import { handleLogoutApi } from '~/apis';
 import thumnailOnePice from '~/assets/one-pice-banner.jpg';
 import coverOnepice from '~/assets/one-piece-manga-covers.jpg';
+import { usePermission } from '~/hooks/usePermission';
+import { permissions } from '~/config/rbacConfig';
 
 function Dashboard() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
+    const { hasPermission } = usePermission(user?.role);
+    if (user) {
+        console.log(hasPermission(permissions.VIEW_DASHBOARD));
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,7 +50,6 @@ function Dashboard() {
         });
         return activeTab;
     };
-    console.log(getDefaultActiveTab());
 
     const [tab, setTab] = useState(getDefaultActiveTab());
     const handleChange = (event, newTab) => {
@@ -113,38 +118,63 @@ function Dashboard() {
             <TabContext value={tab}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label="RBAC Permission Tabs">
-                        <Tab label="Dashboard" value={TAB_URLS.DASHBOARD} component={Link} to={'/dashboard'} />
-                        <Tab label="Support" value={TAB_URLS.SUPPORT} component={Link} to={'/support'} />
-                        <Tab label="Messages" value={TAB_URLS.MESSAGES} component={Link} to={'/messages'} />
-                        <Tab label="Revenue" value={TAB_URLS.REVENUE} component={Link} to={'/revenue'} />
-                        <Tab label="Admin-tools" value={TAB_URLS.ADMIN_TOOLS} component={Link} to={'/admin-tools'} />
+                        {hasPermission(permissions.VIEW_DASHBOARD) && (
+                            <Tab label="Dashboard" value={TAB_URLS.DASHBOARD} component={Link} to={'/dashboard'} />
+                        )}
+                        {hasPermission(permissions.VIEW_SUPPORT) && (
+                            <Tab label="Support" value={TAB_URLS.SUPPORT} component={Link} to={'/support'} />
+                        )}
+                        {hasPermission(permissions.VIEW_MESSAGES) && (
+                            <Tab label="Messages" value={TAB_URLS.MESSAGES} component={Link} to={'/messages'} />
+                        )}
+                        {hasPermission(permissions.VIEW_REVENUE) && (
+                            <Tab label="Revenue" value={TAB_URLS.REVENUE} component={Link} to={'/revenue'} />
+                        )}
+                        {hasPermission(permissions.VIEW_ADMIN_TOOLS) && (
+                            <Tab
+                                label="Admin-tools"
+                                value={TAB_URLS.ADMIN_TOOLS}
+                                component={Link}
+                                to={'/admin-tools'}
+                            />
+                        )}
                     </TabList>
                 </Box>
-                <TabPanel value={TAB_URLS.DASHBOARD} sx={{ padding: '24px 0' }}>
-                    <Alert severity="success" sx={{ width: 'max-content' }}>
-                        Nội dung trang Dashboard chung cho tất cả các Roles!
-                    </Alert>
-                </TabPanel>
-                <TabPanel value={TAB_URLS.SUPPORT} sx={{ padding: '24px 0' }}>
-                    <Alert severity="success" sx={{ width: 'max-content' }}>
-                        Nội dung trang Support chung cho tất cả các Roles!
-                    </Alert>
-                </TabPanel>
-                <TabPanel value={TAB_URLS.MESSAGES} sx={{ padding: '24px 0' }}>
-                    <Alert severity="info" sx={{ width: 'max-content' }}>
-                        Nội dung trang Messages!
-                    </Alert>
-                </TabPanel>
-                <TabPanel value={TAB_URLS.REVENUE} sx={{ padding: '24px 0' }}>
-                    <Alert severity="warning" sx={{ width: 'max-content' }}>
-                        Nội dung trang Revenue!
-                    </Alert>
-                </TabPanel>
-                <TabPanel value={TAB_URLS.ADMIN_TOOLS} sx={{ padding: '24px 0' }}>
-                    <Alert severity="error" sx={{ width: 'max-content' }}>
-                        Nội dung trang Admin tools!
-                    </Alert>
-                </TabPanel>
+                {hasPermission(permissions.VIEW_DASHBOARD) && (
+                    <TabPanel value={TAB_URLS.DASHBOARD} sx={{ padding: '24px 0' }}>
+                        <Alert severity="success" sx={{ width: 'max-content' }}>
+                            Nội dung trang Dashboard chung cho tất cả các Roles!
+                        </Alert>
+                    </TabPanel>
+                )}
+                {hasPermission(permissions.VIEW_SUPPORT) && (
+                    <TabPanel value={TAB_URLS.SUPPORT} sx={{ padding: '24px 0' }}>
+                        <Alert severity="success" sx={{ width: 'max-content' }}>
+                            Nội dung trang Support chung cho tất cả các Roles!
+                        </Alert>
+                    </TabPanel>
+                )}
+                {hasPermission(permissions.VIEW_MESSAGES) && (
+                    <TabPanel value={TAB_URLS.MESSAGES} sx={{ padding: '24px 0' }}>
+                        <Alert severity="info" sx={{ width: 'max-content' }}>
+                            Nội dung trang Messages!
+                        </Alert>
+                    </TabPanel>
+                )}
+                {hasPermission(permissions.VIEW_REVENUE) && (
+                    <TabPanel value={TAB_URLS.REVENUE} sx={{ padding: '24px 0' }}>
+                        <Alert severity="warning" sx={{ width: 'max-content' }}>
+                            Nội dung trang Revenue!
+                        </Alert>
+                    </TabPanel>
+                )}
+                {hasPermission(permissions.VIEW_ADMIN_TOOLS) && (
+                    <TabPanel value={TAB_URLS.ADMIN_TOOLS} sx={{ padding: '24px 0' }}>
+                        <Alert severity="error" sx={{ width: 'max-content' }}>
+                            Nội dung trang Admin tools!
+                        </Alert>
+                    </TabPanel>
+                )}
             </TabContext>
 
             <Divider />

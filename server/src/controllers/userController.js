@@ -30,10 +30,7 @@ const REFRESH_TOKEN_SECRET_SIGNATURE = process.env.REFRESH_TOKEN_SECRET_SIGNATUR
 
 const login = async (req, res) => {
     try {
-        if (
-            req.body.email !== MOCK_DATABASE.USER.EMAIL ||
-            req.body.password !== MOCK_DATABASE.USER.PASSWORD
-        ) {
+        if (req.body.email !== MOCK_DATABASE.USER.EMAIL || req.body.password !== MOCK_DATABASE.USER.PASSWORD) {
             res.status(StatusCodes.UNAUTHORIZED).json({
                 message: 'Email hoặc Password không đúng.',
             });
